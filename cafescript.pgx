@@ -1,0 +1,41 @@
+%grammar cafescript
+
+cafescript: (
+| comment-line
+| statement
+)*
+
+comment-line: / (: comment | blank-line ) /
+comment: / '#' ANY* EOL /
+blank-line: / WS* EOL /
+
+statement: (
+| assignment-statement
+| print-statement
+)
+
+assignment-statement: var-name /- = -/ expression
+print-statement: say - expression
+
+var-name: /( WORD [ WORD DASH ]* )/
+
+expression: (
+| string
+| number
+)
+
+say: 'say'
+
+string: (
+| double-quoted-string
+| single-quoted-string
+| dash-string
+)
+
+double-quoted-string: / DOUBLE ((: BACK DOUBLE |[^ DOUBLE])*) DOUBLE/
+single-quoted-string: / SINGLE ((: BACK SINGLE |[^ SINGLE])*) SINGLE/
+dash-string: / DASH ( WORD+ ) /
+
+number: /( DIGIT+ )/
+
+# vim: sw=2 lisp:

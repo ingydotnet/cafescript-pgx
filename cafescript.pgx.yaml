@@ -1,0 +1,45 @@
+---
++grammar: cafescript
++toprule: cafescript
+_:
+  .rgx: \s*
+assignment_statement:
+  .all:
+  - .ref: var_name
+  - .rgx: \s*=\s*
+  - .ref: expression
+cafescript:
+  +min: 0
+  .any:
+  - .ref: comment_line
+  - .ref: statement
+comment_line:
+  .rgx: (?:\#.*\r?\n|\s*\r?\n)
+dash_string:
+  .rgx: \-(\w+)
+double_quoted_string:
+  .rgx: '"(\\"|[^"])*"'
+expression:
+  .any:
+  - .ref: string
+  - .ref: number
+print_statement:
+  .all:
+  - .ref: say
+  - .ref: _
+  - .ref: expression
+say:
+  .rgx: say
+single_quoted_string:
+  .rgx: \(\\\\|[^\]\)\*
+statement:
+  .any:
+  - .ref: assignment_statement
+  - .ref: print_statement
+string:
+  .any:
+  - .ref: double_quoted_string
+  - .ref: single_quoted_string
+  - .ref: dash_string
+var_name:
+  .rgx: (\w[\w\-]*)
